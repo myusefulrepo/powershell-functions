@@ -6,7 +6,8 @@
 Set-StrictMode -Version Latest
 
 
-Function Start-Log {
+Function Start-Log
+{
     <#
   .SYNOPSIS
     Creates a new log file
@@ -79,16 +80,18 @@ Function Start-Log {
         [Parameter(Mandatory = $false, Position = 3)][switch]$ToScreen
     )
 
-    Process {
+    Process
+    {
         $sFullPath = Join-Path -Path $LogPath -ChildPath $LogName
 
         #Check if file exists and delete if it does
-        If ( (Test-Path -Path $sFullPath) ) {
+        If ( (Test-Path -Path $sFullPath) )
+        {
             Remove-Item -Path $sFullPath -Force
         }
 
         #Create file and start logging
-        New-Item -Path $sFullPath ï¿½ItemType File
+        New-Item -Path $sFullPath ¥ItemType File
 
         Add-Content -Path $sFullPath -Value "***************************************************************************************************"
         Add-Content -Path $sFullPath -Value "Started processing at [$([DateTime]::Now)]."
@@ -110,7 +113,8 @@ Function Start-Log {
         Write-Debug ""
 
         #Write to scren for ToScreen mode
-        If ( $ToScreen -eq $True ) {
+        If ( $ToScreen -eq $True )
+        {
             Write-Output "***************************************************************************************************"
             Write-Output "Started processing at [$([DateTime]::Now)]."
             Write-Output "***************************************************************************************************"
@@ -123,7 +127,8 @@ Function Start-Log {
     }
 }
 
-Function Write-LogInfo {
+Function Write-LogInfo
+{
     <#
   .SYNOPSIS
     Writes informational message to specified log file
@@ -200,9 +205,11 @@ Function Write-LogInfo {
         [Parameter(Mandatory = $false, Position = 3)][switch]$ToScreen
     )
 
-    Process {
+    Process
+    {
         #Add TimeStamp to message if specified
-        If ( $TimeStamp -eq $True ) {
+        If ( $TimeStamp -eq $True )
+        {
             $Message = "$Message  [$([DateTime]::Now)]"
         }
 
@@ -213,13 +220,15 @@ Function Write-LogInfo {
         Write-Debug $Message
 
         #Write to scren for ToScreen mode
-        If ( $ToScreen -eq $True ) {
+        If ( $ToScreen -eq $True )
+        {
             Write-Output $Message
         }
     }
 }
 
-Function Write-LogWarning {
+Function Write-LogWarning
+{
     <#
   .SYNOPSIS
     Writes warning message to specified log file
@@ -281,9 +290,11 @@ Function Write-LogWarning {
         [Parameter(Mandatory = $false, Position = 3)][switch]$ToScreen
     )
 
-    Process {
+    Process
+    {
         #Add TimeStamp to message if specified
-        If ( $TimeStamp -eq $True ) {
+        If ( $TimeStamp -eq $True )
+        {
             $Message = "$Message  [$([DateTime]::Now)]"
         }
 
@@ -294,13 +305,15 @@ Function Write-LogWarning {
         Write-Debug "WARNING: $Message"
 
         #Write to scren for ToScreen mode
-        If ( $ToScreen -eq $True ) {
+        If ( $ToScreen -eq $True )
+        {
             Write-Output "WARNING: $Message"
         }
     }
 }
 
-Function Write-LogError {
+Function Write-LogError
+{
     <#
   .SYNOPSIS
     Writes error message to specified log file
@@ -401,9 +414,11 @@ Function Write-LogError {
         [Parameter(Mandatory = $false, Position = 5)][switch]$ToScreen
     )
 
-    Process {
+    Process
+    {
         #Add TimeStamp to message if specified
-        If ( $TimeStamp -eq $True ) {
+        If ( $TimeStamp -eq $True )
+        {
             $Message = "$Message  [$([DateTime]::Now)]"
         }
 
@@ -414,12 +429,14 @@ Function Write-LogError {
         Write-Debug "ERROR: $Message"
 
         #Write to scren for ToScreen mode
-        If ( $ToScreen -eq $True ) {
+        If ( $ToScreen -eq $True )
+        {
             Write-Output "ERROR: $Message"
         }
 
         #If $ExitGracefully = True then run Log-Finish and exit script
-        If ( $ExitGracefully -eq $True ) {
+        If ( $ExitGracefully -eq $True )
+        {
             Add-Content -Path $LogPath -Value " "
             Stop-Log -LogPath $LogPath
             Break
@@ -427,7 +444,8 @@ Function Write-LogError {
     }
 }
 
-Function Stop-Log {
+Function Stop-Log
+{
     <#
   .SYNOPSIS
     Write closing data to log file & exits the calling script
@@ -508,7 +526,8 @@ Function Stop-Log {
         [Parameter(Mandatory = $false, Position = 2)][switch]$ToScreen
     )
 
-    Process {
+    Process
+    {
         Add-Content -Path $LogPath -Value ""
         Add-Content -Path $LogPath -Value "***************************************************************************************************"
         Add-Content -Path $LogPath -Value "Finished processing at [$([DateTime]::Now)]."
@@ -521,7 +540,8 @@ Function Stop-Log {
         Write-Debug "***************************************************************************************************"
 
         #Write to scren for ToScreen mode
-        If ( $ToScreen -eq $True ) {
+        If ( $ToScreen -eq $True )
+        {
             Write-Output ""
             Write-Output "***************************************************************************************************"
             Write-Output "Finished processing at [$([DateTime]::Now)]."
@@ -529,13 +549,15 @@ Function Stop-Log {
         }
 
         #Exit calling script if NoExit has not been specified or is set to False
-        If ( !($NoExit) -or ($NoExit -eq $False) ) {
+        If ( -not($NoExit) -or ($NoExit -eq $False) )
+        {
             Exit
         }
     }
 }
 
-Function Send-Log {
+Function Send-Log
+{
     <#
   .SYNOPSIS
     Emails completed log file to list of recipients
@@ -601,8 +623,10 @@ Function Send-Log {
         [Parameter(Mandatory = $true, Position = 4)][string]$EmailSubject
     )
 
-    Process {
-        Try {
+    Process
+    {
+        Try
+        {
             $sBody = ( Get-Content $LogPath | Out-String )
 
             #Create SMTP object and send email
@@ -611,7 +635,8 @@ Function Send-Log {
             Exit 0
         }
 
-        Catch {
+        Catch
+        {
             Exit 1
         }
     }

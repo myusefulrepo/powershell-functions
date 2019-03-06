@@ -134,7 +134,7 @@ http://77.104.138.174/~powershe/power-shell.com
         foreach ($file in $files)
         {
             $fileObject = New-Object PSObject #An object,created and destroyed for each file
-            $networkpath = "\\" + $HostName + $path.substring($path.LastIndexOf('\')) + '\' + (($file.FullName).trim($path))
+            #$networkpath = "\\" + $HostName + $path.substring($path.LastIndexOf('\')) + '\' + (($file.FullName).trim($path))
             #The following add data to the fileObjects
             Add-Member -inputObject $fileObject -memberType NoteProperty -name "File_Name" -value $file
             Add-Member -inputObject $fileObject -memberType NoteProperty -name "Full_File_Path" -value $file.FullName

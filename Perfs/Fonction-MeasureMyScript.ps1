@@ -1,5 +1,6 @@
-﻿function Measure-MyScript {
-<#
+﻿function Measure-MyScript
+{
+    <#
 .SYNOPSIS
     Measure speed execution of a scriptblock
 
@@ -8,16 +9,19 @@
 
 .PARAMETER Name
     Specifies the name of the test
+    Default : Test
 
 .PARAMETER ScriptBlock
     Specifies the name of your script block or put your code here
 
 .PARAMETER Repeat
     Specifies the numbers of time you want the test run
+    Default : 1
 
 .PARAMETER Unit
     Specifies the unit for the result.
-    Accepted : d,h,m,s,ms 
+    Accepted : d,h,m,s,ms
+    Default : ms
     for Days,hours,minutes,seconds,milliseconds
 
 .EXAMPLE
@@ -38,105 +42,130 @@
 .NOTES
     Christophe Kumor
     https://christophekumor.github.io
+    Olivier FERRIERE : 06/03/2019
+    Add. somme minor corrections to pass PSCodeHealth
+    Add some minor informations, as default value in information section, and param section
 #>
 
     [CmdletBinding()]
     param (
+        [OutputType([PSCustomObject])]
+
+
+        # Parameter help description : Name
+        [Parameter(HelpMessage = "Name of the test - Default : Test")]
         [string]$Name = "Test",
 
-        [Parameter(Mandatory = $true)]
-        [ScriptBlock]$ScriptBlock, 
+        # Parameter help description : ScriptBlock
+        [Parameter(Mandatory = $true,
+            HelpMessage = "ScriptBlock to Measure")]
+        [ScriptBlock]$ScriptBlock,
 
-        [ValidateScript( { if (@('d', 'h', 'm', 's', 'ms') -contains $_) {
+        # Parameter help description : Unit
+        [paremeter(HelpMessage = "Unit to measure time - Accepted values : d, h, m, s, ms - Default : ms")]
+        [ValidateScript( { if (@('d', 'h', 'm', 's', 'ms') -contains $_)
+                {
                     $true
                 }
-                else {
+                else
+                {
                     throw "$_ is not supported. Autorised : d,h,m,s,ms ->Days,hours,minutes,seconds,milliseconds"
                 } })]
         [String]$Unit = 'ms',
-        
+
+        # Parameter help desscription : Repeat
+        [parameter(HelpMessage = "number of times to measure the scriptblock - Default : 1")]
         [int]$Repeat = 1
     )
 
 
-    if (-not $PSBoundParameters['Name']) 
-        {
+    if (-not $PSBoundParameters['Name'])
+    {
         $Name = ('{0}{1}' -f $Name, $Repeat)
-        }
+    }
     Write-Verbose $name
 
     # Initialisation
     $timings = @()
-    do {
+    do
+    {
         $sw = New-Object Diagnostics.Stopwatch
-        if ($PSBoundParameters['Verbose']) 
-            {
+        if ($PSBoundParameters['Verbose'])
+        {
             $sw.Start()
-            try 
-                {
+            try
+            {
                 &$ScriptBlock
-                } # end try
-            catch 
-                {
-                return $_.Exception.Message
-                }  # end Catch
-            $sw.Stop()
-            } # End if
-
-        else 
+            } # end try
+            catch
             {
-            $sw.Start()
-            try 
-                {
-                $null = &$ScriptBlock
-                } # end try
-            catch 
-                {
                 return $_.Exception.Message
-                } # end Catch
+            }  # end Catch
+            $sw.Stop()
+        } # End if
+
+        else
+        {
+            $sw.Start()
+            try
+            {
+                $null = &$ScriptBlock
+            } # end try
+            catch
+            {
+                return $_.Exception.Message
+            } # end Catch
             $sw.Stop()
             Write-Verbose "o."
-            } # end else
+        } # end else
         $timings += $sw.Elapsed
         $Repeat--
-        } # end Do
+    } # end Do
 
     while ($Repeat -gt 0)
     $stats = $timings | Measure-Object -Average -Minimum -Maximum -Property Ticks
-    switch ($Unit) {
-        d { 
+    switch ($Unit)
+    {
+        d
+        {
             $u = 'TotalDays'; $msg = 'Days'; break
-           }
-        h  {
+        }
+        h
+        {
             $u = 'TotalHours'; $msg = 'Hours'; break
-           }
-        m  {
+        }
+        m
+        {
             $u = 'TotalMinutes'; $msg = 'Minutes'; break
-           }
-        s  {
+        }
+        s
+        {
             $u = 'TotalSeconds'; $msg = 'Seconds'; break
-           }
-        ms {
+        }
+        ms
+        {
             $u = 'TotalMilliseconds'; $msg = 'Milliseconds'; break
-           }
-        default {
+        }
+        default
+        {
             $u = 'TotalMilliseconds'; $msg = 'Milliseconds'
-           }
+        }
     } # End switch
 
-    if ($PSBoundParameters['Repeat'] -gt 1) 
-        {
+    if ($PSBoundParameters['Repeat'] -gt 1)
+    {
         [ordered]@{
             name = $Name
             Avg  = "{0} {1}" -f (New-Object System.TimeSpan $stats.Average).$u, $msg
             Min  = "{0} {1}" -f (New-Object System.TimeSpan $stats.Minimum).$u, $msg
             Max  = "{0} {1}" -f (New-Object System.TimeSpan $stats.Maximum).$u, $msg
         }
-        } # End if
-    else {
+    } # End if
+    else
+    {
         [ordered]@{
             name = $Name
             Tps  = "{0} {1}" -f (New-Object System.TimeSpan $stats.Average).$u, $msg
         }
-        } # end Else
+    } # end Else
 } # End function

@@ -1,16 +1,16 @@
 ﻿<#
     CORETECH A/S SOFTWARE LICENSE TERMS
 
-    These license terms are an agreement between Coretech A/S and you.  Please read them.  They apply to the software you are downloading from Coretech.dk, 
-    which includes the media on which you received it, if any.  The terms also apply to any Coretech A/S updates for this software, unless other terms accompany those items.  
+    These license terms are an agreement between Coretech A/S and you.  Please read them.  They apply to the software you are downloading from Coretech.dk,
+    which includes the media on which you received it, if any.  The terms also apply to any Coretech A/S updates for this software, unless other terms accompany those items.
     If so, those terms apply.
 
     BY USING THE SOFTWARE, YOU ACCEPT THESE TERMS.  IF YOU DO NOT ACCEPT THEM, DO NOT USE THE SOFTWARE.
     If you comply with these license terms, you have the rights below.
 
 1.	INSTALLATION AND USE RIGHTS.  You may install and use any number of copies of the software on your devices.
-2.	SCOPE OF LICENSE.  The software is licensed, not sold. This agreement only gives you some rights to use the software.  Coretech reserves all other rights.  
-    Unless applicable law gives you more rights despite this limitation, you may use the software only as expressly permitted in this agreement.  
+2.	SCOPE OF LICENSE.  The software is licensed, not sold. This agreement only gives you some rights to use the software.  Coretech reserves all other rights.
+    Unless applicable law gives you more rights despite this limitation, you may use the software only as expressly permitted in this agreement.
     In doing so, you must comply with any technical limitations in the software that only allow you to use it in certain ways.    You may not
     •	work around any technical limitations in the binary versions of the software;
     •	reverse engineer, decompile or disassemble the binary versions of the software, except and only to the extent that applicable law expressly permits, despite this limitation;
@@ -24,22 +24,22 @@
 5.	ENTIRE AGREEMENT.  This agreement, and the terms for supplements and updates that you use, are the entire agreement for the software and support services.
 6.	APPLICABLE LAW.
 a.	United States.  If you acquired the software in the United States, Washington state law governs the interpretation of this agreement and applies to claims for breach of it,
-    regardless of conflict of laws principles.  The laws of the state where you live govern all other claims, including claims under state consumer protection laws, unfair competition laws, 
+    regardless of conflict of laws principles.  The laws of the state where you live govern all other claims, including claims under state consumer protection laws, unfair competition laws,
     and in tort.
 b.	Outside the United States.  If you acquired the software in any other country, the laws of that country apply.
-7.	LEGAL EFFECT.  This agreement describes certain legal rights.  You may have other rights under the laws of your country.  You may also have rights with respect to the party from whom you 
+7.	LEGAL EFFECT.  This agreement describes certain legal rights.  You may have other rights under the laws of your country.  You may also have rights with respect to the party from whom you
     acquired the software.  This agreement does not change your rights under the laws of your country if the laws of your country do not permit it to do so.
-8.	DISCLAIMER OF WARRANTY.   THE SOFTWARE IS LICENSED "AS-IS."  YOU BEAR THE RISK OF USING IT.  CORETECH A/S GIVES NO EXPRESS WARRANTIES, GUARANTEES OR CONDITIONS.  YOU MAY HAVE ADDITIONAL 
-    CONSUMER RIGHTS UNDER YOUR LOCAL LAWS WHICH THIS AGREEMENT CANNOT CHANGE.  TO THE EXTENT PERMITTED UNDER YOUR LOCAL LAWS, CORETECH A/S EXCLUDES THE IMPLIED WARRANTIES OF MERCHANTABILITY, 
+8.	DISCLAIMER OF WARRANTY.   THE SOFTWARE IS LICENSED "AS-IS."  YOU BEAR THE RISK OF USING IT.  CORETECH A/S GIVES NO EXPRESS WARRANTIES, GUARANTEES OR CONDITIONS.  YOU MAY HAVE ADDITIONAL
+    CONSUMER RIGHTS UNDER YOUR LOCAL LAWS WHICH THIS AGREEMENT CANNOT CHANGE.  TO THE EXTENT PERMITTED UNDER YOUR LOCAL LAWS, CORETECH A/S EXCLUDES THE IMPLIED WARRANTIES OF MERCHANTABILITY,
     FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.
-9.	LIMITATION ON AND EXCLUSION OF REMEDIES AND DAMAGES.  YOU CAN RECOVER FROM CORETECH AND ITS SUPPLIERS ONLY DIRECT DAMAGES UP TO U.S. $1.00.  YOU CANNOT RECOVER ANY OTHER DAMAGES, 
+9.	LIMITATION ON AND EXCLUSION OF REMEDIES AND DAMAGES.  YOU CAN RECOVER FROM CORETECH AND ITS SUPPLIERS ONLY DIRECT DAMAGES UP TO U.S. $1.00.  YOU CANNOT RECOVER ANY OTHER DAMAGES,
     INCLUDING CONSEQUENTIAL, LOST PROFITS, SPECIAL, INDIRECT OR INCIDENTAL DAMAGES.
 
     This limitation applies to
     •	anything related to the software, services, content (including code) on third party Internet sites, or third party programs; and
     •	claims for breach of contract, breach of warranty, guarantee or condition, strict liability, negligence, or other tort to the extent permitted by applicable law.
 
-    It also applies even if Coretech A/S knew or should have known about the possibility of the damages.  The above limitation or exclusion may not apply to you because your country may 
+    It also applies even if Coretech A/S knew or should have known about the possibility of the damages.  The above limitation or exclusion may not apply to you because your country may
     not allow the exclusion or limitation of incidental, consequential or other damages.
 
 #>
@@ -50,7 +50,9 @@ Add-Type –assemblyName System.Windows.Forms
 Function Show-Error
 {
     Param($Message)
-    $Title = "Error"    $icon = [Windows.Forms.MessageBoxIcon]::Error    [windows.forms.messagebox]::Show($Message,$Title,0,$icon)
+    $Title = "Error"
+    $icon = [Windows.Forms.MessageBoxIcon]::Error
+    [windows.forms.messagebox]::Show($Message,$Title,0,$icon)
 
 }
 
@@ -64,15 +66,23 @@ Function Show-RunAsMessage {
 }
 
 If($PSVersionTable.PSVersion.Major -ge 3){
-   If(-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltinRole]"Administrator")){
+   If(-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltinRole]"Administrator")){
+
        If((Show-RunAsMessage -Message "You need to run this tool as an administrator.`n Do you want to start it as an administrator?") -eq "YES" -and $Host.Runspace.ApartmentState -eq "STA"){
-                Start-Process -File PowerShell.exe -Argument "-STA -noprofile -file $($myinvocation.mycommand.definition)" -Verb Runas                break        }       Else{            $ShowMessage = $True       }   }
+                Start-Process -File PowerShell.exe -Argument "-STA -noprofile -file $($myinvocation.mycommand.definition)" -Verb Runas
+                break
+       }
+       Else{
+            $ShowMessage = $True
+       }
+   }
 
 }
 else{
     Show-Error -Message "Please Install Windows Management Framework 3.0"
     Break
-}
+}
+
 
 $Global:CheckJobStatus = new-object System.Windows.Threading.DispatcherTimer
 [XML]$MainWindow = @'
@@ -210,10 +220,10 @@ $Global:CheckJobStatus = new-object System.Windows.Threading.DispatcherTimer
                 </Grid>
             </TabItem>
         </TabControl>
-        <GridSplitter Grid.Row="2" 
-              HorizontalAlignment="Stretch" 
+        <GridSplitter Grid.Row="2"
+              HorizontalAlignment="Stretch"
               VerticalAlignment="Top"
-              Background="Lavender" 
+              Background="Lavender"
               ShowsPreview="true"
               ResizeDirection="Rows"
               Height="2" />
@@ -365,13 +375,14 @@ $ConnectForm = [Windows.Markup.XAMLReader]::Load($Reader2)
 $Reader3 = (New-Object System.XML.XMLNodeReader $NameSpacesWindow)
 $NameSpacesForm = [Windows.Markup.XAMLReader]::Load($Reader3)
 
-#FunctionsFunction Create-Cred
+#Functions
+Function Create-Cred
 {
     Param(
          $Username,
          $Password
          )
-   
+
    Try{
         $Pass = ConvertTo-SecureString $Password -AsPlainText –Force -ErrorAction Stop
         Try{
@@ -384,9 +395,10 @@ $NameSpacesForm = [Windows.Markup.XAMLReader]::Load($Reader3)
    Catch{
         Show-Error -Message $_.Exception.Message
    }
-   
+
 }
-Function Write-LoggingScreen
+
+Function Write-LoggingScreen
 {
     Param(
          $LogText,
@@ -395,7 +407,7 @@ $NameSpacesForm = [Windows.Markup.XAMLReader]::Load($Reader3)
          $TextWeight,
          $Object
          )
-    
+
     $Object.Dispatcher.Invoke("Normal",[action]{
             $NewParagraph = New-Object System.Windows.Documents.Paragraph
             $NewParagraph.Margin = 0
@@ -407,7 +419,19 @@ $NameSpacesForm = [Windows.Markup.XAMLReader]::Load($Reader3)
     })
 }
 
-Function Update-ProgressBar{    Param(         $Maximum,         $CurrentValue,         $ProgressObject         )        $ProgressObject.Dispatcher.Invoke("Render",[action]{    $ProgressObject.Value =$CurrentValue    $ProgressObject.Maximum = $Maximum    })}
+Function Update-ProgressBar
+{
+    Param(
+         $Maximum,
+         $CurrentValue,
+         $ProgressObject
+         )
+
+    $ProgressObject.Dispatcher.Invoke("Render",[action]{
+    $ProgressObject.Value =$CurrentValue
+    $ProgressObject.Maximum = $Maximum
+    })
+}
 
 Function Export-Content
 {
@@ -416,7 +440,7 @@ Function Export-Content
         $ContentObject,
         $ContentOutPutLocation = "$env:USERPROFILE\Desktop\"
         )
-        
+
         Begin{
             $ContentFileName = Get-Random
         }
@@ -483,7 +507,9 @@ Function Add-TreeItem
     $ChildItem.Tag = "$Tag\$Name"
 
     [Void]$Parent.Items.Add($ChildItem)
-}Function Get-CMClientNameSpaces
+}
+
+Function Get-CMClientNameSpaces
 {
     Param(
          $NameSpace,
@@ -506,7 +532,7 @@ Function Add-TreeItem
                #Add the TreeView Items
                Add-TreeItem -Name $ns.Name -Parent $GetParent -Tag $NameSpace
                Get-CMClientNameSpaces -NameSpace $NameSpace\$($ns.Name) -Username $Username -Password $Password -AuthentLvl $AuthentLvl -ComputerName $ComputerName
-       
+
                #Set the Label Content
                $Lbl_NameSpaces_Status_text.Content = "Reading"
 
@@ -524,7 +550,7 @@ Function Add-TreeItem
         }
     }
 
-  
+
 }
 
 Function Get-WMIClassInformation
@@ -544,27 +570,40 @@ Function Get-WMIClassInformation
             $WMIProperties = Get-WmiObject -Namespace $ConnectionString -Class $Class -List -Amended @sp -ErrorAction STOP
 
             #Set the Specific WMI Class information
-            $TXT_Connect_WMi_ConnectionString.Text = "\\$Computer\$($ConnectionString):$Class"            $TXT_Connect_Class_Description.Text = $WMIProperties.psbase.Qualifiers | Where-Object {$_.Name -eq "Description"} | Select-Object -ExpandProperty Value            #Clear the Lazy properties Listbox items            $LW_Selected_WMI_Class_Lazy_Properties.ItemsSource = ""            #Get the WMI Class Lazy Properties            $LazyPropertiesArray = @()            foreach($property in $WMIProperties.Properties)
+            $TXT_Connect_WMi_ConnectionString.Text = "\\$Computer\$($ConnectionString):$Class"
+            $TXT_Connect_Class_Description.Text = $WMIProperties.psbase.Qualifiers | Where-Object {$_.Name -eq "Description"} | Select-Object -ExpandProperty Value
+
+            #Clear the Lazy properties Listbox items
+            $LW_Selected_WMI_Class_Lazy_Properties.ItemsSource = ""
+
+            #Get the WMI Class Lazy Properties
+            $LazyPropertiesArray = @()
+            foreach($property in $WMIProperties.Properties)
             {
-               #Write the WMI Properties information 
+               #Write the WMI Properties information
                Write-LoggingScreen -LogText $property.Name -TextColor Black -TextSize 15 -TextWeight "Bold" -Object $RTXT_Properties_Information
 
                foreach($WMIQualifier in $property.Qualifiers)
                {
-                    #Write the WMI Properties information 
+                    #Write the WMI Properties information
                     if(($WMIQualifier | Where-Object {$_.Name -eq "Description"} | Select-Object -ExpandProperty Value).length -ne 0){
                         Write-LoggingScreen -LogText ($WMIQualifier | Where-Object {$_.Name -eq "Description"} | Select-Object -ExpandProperty Value) -TextColor Blue -TextSize 12 -TextWeight "Normal" -Object $RTXT_Properties_Information
                     }
 
                     #Check if the Property is Lazy
                     if($WMIQualifier.name -eq "Lazy"){
-                                          $tmpObject = Select-Object -InputObject "" Content                         $tmpObject.Content = $Property.Name             
+
+                         $tmpObject = Select-Object -InputObject "" Content
+                         $tmpObject.Content = $Property.Name
                          $LazyPropertiesArray +=$tmpObject
-                
+
                     }
                }
-       
-            }                #Get the Method information            foreach($WMIMethod in $WMIProperties.psbase.methods)
+
+            }
+
+            #Get the Method information
+            foreach($WMIMethod in $WMIProperties.psbase.methods)
             {
                 Write-LoggingScreen -LogText "Method Name: $($WMIMethod.Name)" -TextColor Black -TextSize 14 -TextWeight "Bold" -Object $RTXT_Method_Information
                 Try{
@@ -573,9 +612,20 @@ Function Get-WMIClassInformation
                 Catch{
                     Write-LoggingScreen -LogText "[N/A]" -TextColor Blue -TextSize 12 -TextWeight "Normal" -Object $RTXT_Method_Information
                 }
-            }            #Set the Lazy Properties Listview Source            $LW_Selected_WMI_Class_Lazy_Properties.ItemsSource = $LazyPropertiesArray            #Add the WMI Class Methdos            $MethodArray = @()            #Clear the Method Listbox items            $LW_Selected_WMI_Class_Methods.ItemsSource = ""            foreach($WMMethod in $WMIProperties.Methods)
+            }
+
+            #Set the Lazy Properties Listview Source
+            $LW_Selected_WMI_Class_Lazy_Properties.ItemsSource = $LazyPropertiesArray
+
+            #Add the WMI Class Methdos
+            $MethodArray = @()
+
+            #Clear the Method Listbox items
+            $LW_Selected_WMI_Class_Methods.ItemsSource = ""
+            foreach($WMMethod in $WMIProperties.Methods)
             {
-                $tmpObject = Select-Object -InputObject "" Content                $tmpObject.Content = $WMMethod.Name               
+                $tmpObject = Select-Object -InputObject "" Content
+                $tmpObject.Content = $WMMethod.Name
                 $MethodArray +=$tmpObject
             }
 
@@ -589,13 +639,25 @@ Function Get-WMIClassInformation
     }
 }
 
-Function Get-WMITableInformation{    Param(        $NameSpace,        $query,        $ComputerName,        $Username,        $Password,        $AuthentLvl         )         #Create the Datatable for WMI class information    $Script:DataTable = New-Object System.Data.DataTable
-         
+Function Get-WMITableInformation
+{
+    Param(
+        $NameSpace,
+        $query,
+        $ComputerName,
+        $Username,
+        $Password,
+        $AuthentLvl
+         )
+
+    #Create the Datatable for WMI class information
+    $Script:DataTable = New-Object System.Data.DataTable
+
     $SP = Build-Splatting -ComputerName $ComputerName -UserName $UserName -Password $Password -AuthentLvl $AuthentLvl
     if($SP -ne 'OK'){
         Try{
             $WM = Get-WmiObject -Namespace $NameSpace -Query $query @sp -ErrorAction STOP
-          
+
             $FilterWM = $WM | Select-Object -First 1
 
             #Add table columns
@@ -605,7 +667,7 @@ Function Get-WMITableInformation{    Param(        $NameSpace,        $query
                 {
                     [Void]$DataTable.Columns.Add($WMIProperties.Name)
                 }
-            } 
+            }
 
             #Add table rows
             foreach($item in $WM)
@@ -613,21 +675,40 @@ Function Get-WMITableInformation{    Param(        $NameSpace,        $query
               $row = $DataTable.NewRow()
                 foreach($column in $DataTable.Columns.columnName)
                 {
-      
+
                     $row[$column] = $item.Properties.Item($column).Value
-            
+
                 }
                 Update-ProgressBar -CurrentValue ($i++) -Maximum ($WM.count-1) -ProgressObject $ProgressUpdate
                 $DataTable.Rows.Add($row)
-        
-            }            #Create the DataSet for LW          $LWDataSet = New-Object System.Data.DataSet          $LWDataSet.Tables.add($DataTable)          $LWDataSet.Tables[0]          $LW_WMI_Query_Output.ItemsSource = $LWDataSet.Tables[0].DefaultView
+
+            }
+
+          #Create the DataSet for LW
+          $LWDataSet = New-Object System.Data.DataSet
+          $LWDataSet.Tables.add($DataTable)
+          $LWDataSet.Tables[0]
+          $LW_WMI_Query_Output.ItemsSource = $LWDataSet.Tables[0].DefaultView
 
         }
         Catch{
             Show-Error -Message $_.Exception.Message
-        }    }}
+        }
+    }
+}
 
-Function Get-NameSpaceMethods{    Param(         $NameSpace,         $UserName,         $Password,         $ComputerName,         $AuthentLvl         )    #Create the Datatable for WMI class information    $Script:DataTable2 = New-Object System.Data.DataTable
+Function Get-NameSpaceMethods
+{
+    Param(
+         $NameSpace,
+         $UserName,
+         $Password,
+         $ComputerName,
+         $AuthentLvl
+         )
+
+    #Create the Datatable for WMI class information
+    $Script:DataTable2 = New-Object System.Data.DataTable
 
    $SP = Build-Splatting -ComputerName $ComputerName -UserName $UserName -Password $Password -AuthentLvl $AuthentLvl
    if($SP -ne 'OK'){
@@ -649,9 +730,9 @@ Function Get-NameSpaceMethods{    Param(         $NameSpace,         $UserNa
                 }
 
                  $EmptyArray += $D
-            
+
             }
-      
+
         }
         $Columns = $EmptyArray| ForEach-Object {($_ | Get-Member -MemberType NoteProperty).Count} | Sort-Object -Descending
 
@@ -683,12 +764,17 @@ Function Get-NameSpaceMethods{    Param(         $NameSpace,         $UserNa
 
         foreach($col in $DataTable2.Columns)
         {
-            #Add LW Columns            Add-ListviewColumn -LWObject $LW_WMI_NameSpace_Methods -CHeader $col.Caption -CWidth 100
+            #Add LW Columns
+            Add-ListviewColumn -LWObject $LW_WMI_NameSpace_Methods -CHeader $col.Caption -CWidth 100
             #Set the label content
             $Lbl_Status_text.Content = "Reading"
         }
 
-        #Create the DataSet for LW        $LWDataSet = New-Object System.Data.DataSet        $LWDataSet.Tables.add($DataTable2)        $LWDataSet.Tables[0]        $LW_WMI_NameSpace_Methods.ItemsSource = $LWDataSet.Tables[0].DefaultView
+        #Create the DataSet for LW
+        $LWDataSet = New-Object System.Data.DataSet
+        $LWDataSet.Tables.add($DataTable2)
+        $LWDataSet.Tables[0]
+        $LW_WMI_NameSpace_Methods.ItemsSource = $LWDataSet.Tables[0].DefaultView
 
         $Lbl_Status_text.Content = "Done"
         $ProgressUpdate.Value = 0
@@ -727,7 +813,7 @@ Function Create-ModuleParameterSetsReport
                 $i++
                 $D | Add-Member -MemberType NoteProperty -Name "Parameter:$i" -Value $item3.Name
             }
-            
+
            $D | ConvertTo-Csv -OutVariable Data -NoTypeInformation |Out-Null
 
            $data[1..($data.count - 1)] | ForEach-Object {Add-Content -Value $_ -Path "$env:USERPROFILE\Desktop\$($FileName).csv"}
@@ -765,7 +851,11 @@ Function Get-CM12SDKNetCodeExample
 
 Function Get-ModuleLocation
 {
-    $PSHModule = New-Object Microsoft.Win32.OpenFileDialog    $PSHModule.DefaultExt = ".CSV"    $PSHModule.ShowDialog()    $TXT_PSH_Module_Location.Text = $PSHModule.FileName
+    $PSHModule = New-Object Microsoft.Win32.OpenFileDialog
+    $PSHModule.DefaultExt = ".CSV"
+    $PSHModule.ShowDialog()
+
+    $TXT_PSH_Module_Location.Text = $PSHModule.FileName
 }
 
 Function Add-ListviewColumn
@@ -778,9 +868,14 @@ Function Add-ListviewColumn
 
     $LWColumn = New-Object System.Windows.Controls.GridViewColumn
     $LWColumn.Header = $CHeader
-    $LWColumn.Width = $CWidth        $CBinding = New-Object System.Windows.Data.Binding        $CBinding.Path = $CHeader
+    $LWColumn.Width = $CWidth
 
-    $LWColumn.DisplayMemberBinding = $CBinding    $GetLWView = $LWObject.View    $GetLWView.Columns.Add($LWColumn)
+        $CBinding = New-Object System.Windows.Data.Binding
+        $CBinding.Path = $CHeader
+
+    $LWColumn.DisplayMemberBinding = $CBinding
+    $GetLWView = $LWObject.View
+    $GetLWView.Columns.Add($LWColumn)
 }
 Function Get-Scrollbar
 {
@@ -810,12 +905,15 @@ Function Get-Scrollbar
 
 #Main Window
 $LW_WMIClasses = $MainFORM.FindName('LW_WMIClasses')
-$LW_Selected_WMI_Class_Methods = $MainFORM.FindName('LW_Selected_WMI_Class_Methods')$LW_Selected_WMI_Class_Lazy_Properties = $MainFORM.FindName('LW_Selected_WMI_Class_Lazy_Properties')
+$LW_Selected_WMI_Class_Methods = $MainFORM.FindName('LW_Selected_WMI_Class_Methods')
+$LW_Selected_WMI_Class_Lazy_Properties = $MainFORM.FindName('LW_Selected_WMI_Class_Lazy_Properties')
 $LW_WMI_Query_Output = $MainFORM.FindName('LW_WMI_Query_Output')
 $LW_WMI_NameSpace_Methods = $MainFORM.FindName('LW_WMI_NameSpace_Methods')
 
 $TXT_Connected_Computer = $MainFORM.FindName('TXT_Connected_Computer')
-$TXT_Connect_WMi_ConnectionString = $MainFORM.FindName('TXT_Connect_WMi_ConnectionString')$TXT_Connect_Class_Description = $MainFORM.FindName('TXT_Connect_Class_Description')$TXT_Selected_WMI_Class = $MainFORM.FindName('TXT_Selected_WMI_Class')
+$TXT_Connect_WMi_ConnectionString = $MainFORM.FindName('TXT_Connect_WMi_ConnectionString')
+$TXT_Connect_Class_Description = $MainFORM.FindName('TXT_Connect_Class_Description')
+$TXT_Selected_WMI_Class = $MainFORM.FindName('TXT_Selected_WMI_Class')
 $TXT_Connect_WMI_NameSpace = $MainFORM.FindName('TXT_Connect_WMI_NameSpace')
 $TXT_PSH_Module_Location = $MainFORM.FindName('TXT_PSH_Module_Location')
 $TXT_WQL_Query = $MainFORM.FindName('TXT_WQL_Query')
@@ -829,7 +927,9 @@ $RTXT_CM12_Example = $MainFORM.FindName('RTXT_CM12_Example')
 $ProgressUpdate = $MainFORM.FindName('ProgressUpdate')
 
 $Lbl_Status_text = $MainFORM.FindName('Lbl_Status_text')
-$LBL_Error_Message = $MainFORM.FindName('LBL_Error_Message')$Combo_Loaded_Module_Commands = $MainFORM.FindName('Combo_Loaded_Module_Commands')
+$LBL_Error_Message = $MainFORM.FindName('LBL_Error_Message')
+
+$Combo_Loaded_Module_Commands = $MainFORM.FindName('Combo_Loaded_Module_Commands')
 $Combo_Loaded_PSH_Modules = $MainFORM.FindName('Combo_Loaded_PSH_Modules')
 $Combo_Selected_Class_Methods = $MainFORM.FindName('Combo_Selected_Class_Methods')
 
@@ -901,17 +1001,17 @@ $Lbl_NameSpaces_Status_text = $NameSpacesForm.FindName('Lbl_NameSpaces_Status_te
             $NameSpaces.Items.Add($RootItem)
 
             Get-CMClientNameSpaces -NameSpace ROOT -AuthentLvl $Combo_WMI_Authentication.SelectedItem.Tag -User $($TXT_User_Name.Text) -Password $($TXT_User_Password.Password) -ComputerName $TXT_Connect_Computer.Text
-            
+
             #Change the cursor back to normal
             [System.Windows.Input.Mouse]::OverrideCursor = $null
-            
+
         })
 
-    
+
     })
     #Connect to computer
     $Btn_Connect_TO_Computer.Add_Click({
-      
+
     #This will query all the classes in specific NameSpace
           If($TXT_Selected_NameSpace.Text.Length -ne 0){
 
@@ -927,8 +1027,8 @@ $Lbl_NameSpaces_Status_text = $NameSpacesForm.FindName('Lbl_NameSpaces_Status_te
                   $RTXT_Method_Information.Document.Blocks.Clear()
               })
 
-              $ConnectionString = $TXT_Selected_NameSpace.Text 
-              $Tag = $TXT_Selected_NameSpace.Text 
+              $ConnectionString = $TXT_Selected_NameSpace.Text
+              $Tag = $TXT_Selected_NameSpace.Text
 
               $SP = Build-Splatting -ComputerName $TXT_Connect_Computer.Text -UserName $TXT_User_Name.Text -Password $TXT_User_Password.Password -AuthentLvl $Combo_WMI_Authentication.SelectedItem.Tag
               $job = {
@@ -942,9 +1042,11 @@ $Lbl_NameSpaces_Status_text = $NameSpacesForm.FindName('Lbl_NameSpaces_Status_te
 
                             }
                             Catch{
-                                $Title = "Error"                                $icon = [Windows.Forms.MessageBoxIcon]::Error                                [windows.forms.messagebox]::Show($_,$Title,0,$icon)
+                                $Title = "Error"
+                                $icon = [Windows.Forms.MessageBoxIcon]::Error
+                                [windows.forms.messagebox]::Show($_,$Title,0,$icon)
                             }
-  
+
                 }
 
                 if($SP -ne 'OK'){
@@ -958,22 +1060,22 @@ $Lbl_NameSpaces_Status_text = $NameSpacesForm.FindName('Lbl_NameSpaces_Status_te
                     $sessionstate = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
                     $Script:newRunspace =[runspacefactory]::CreateRunspacePool(1, 1, $sessionstate, $Host)
                     $newRunspace.ApartmentState = "STA"
-                    $newRunspace.ThreadOptions = "ReuseThread"          
+                    $newRunspace.ThreadOptions = "ReuseThread"
                     $newRunspace.Open()
                     $script:WorkerThread = [powershell]::Create().addscript($job).AddArgument($SP).AddArgument($ConnectionString)
                     $WorkerThread.RunspacePool  = $newrunspace
                     $script:sjob = $WorkerThread.begininvoke()
 
                     $CheckJobStatus.Tag = $sjob
-                    $CheckJobStatus.Start() 
-                    
+                    $CheckJobStatus.Start()
+
                 }
               #***************
           }
           Else{
             $Lbl_Message_TO_User.Content = "Please select correct NameSpace"
           }
-      
+
     })
     #Check the computer name. If localhost, then disable the UserName and Password Box
     $TXT_Connect_Computer.Add_TextChanged({
@@ -1001,7 +1103,8 @@ $Lbl_NameSpaces_Status_text = $NameSpacesForm.FindName('Lbl_NameSpaces_Status_te
     $Btn_Get_WMI_NameSpace_Methods.Add_Click({
 
         $LWView = $LW_WMI_NameSpace_Methods.View
-        $LWView.Columns.Clear()        $LW_WMI_NameSpace_Methods.ItemsSource = ""
+        $LWView.Columns.Clear()
+        $LW_WMI_NameSpace_Methods.ItemsSource = ""
 
         $Lbl_Status_text.Dispatcher.Invoke("Normal",[Action]{
             #Set the Cursor to wait state
@@ -1011,7 +1114,7 @@ $Lbl_NameSpaces_Status_text = $NameSpacesForm.FindName('Lbl_NameSpaces_Status_te
         })
         $LW_WMI_NameSpace_Methods.Dispatcher.Invoke("Normal",[Action]{
             Get-NameSpaceMethods -NameSpace $TXT_Selected_NameSpace.Text -Computer $TXT_Connected_Computer.Text -UserName $($TXT_User_Name.Text) -Password $($TXT_User_Password.Password) -AuthentLvl $Combo_WMI_Authentication.SelectedItem.Tag
-            
+
            #Change the cursor back to normal
            [System.Windows.Input.Mouse]::OverrideCursor = $null
         })
@@ -1027,7 +1130,7 @@ $Lbl_NameSpaces_Status_text = $NameSpacesForm.FindName('Lbl_NameSpaces_Status_te
     })
     # Export out the WMI Methods
     $Btn_Export_CSV.Add_Click({
-      
+
         $Script:DataTable2 | Export-Content
 
     })
@@ -1047,7 +1150,12 @@ $Lbl_NameSpaces_Status_text = $NameSpacesForm.FindName('Lbl_NameSpaces_Status_te
           $NameSpacesForm.Dispatcher.BeginInvoke("Normal",[Action]{$NameSpacesForm.Hide()})
     })
     # Get the selected NameSapce
-    $NameSpaces.Add_MouseDoubleClick({        $TXT_Selected_NameSpace.Text = $NameSpaces.SelectedItem.Tag        $NameSpacesForm.Dispatcher.BeginInvoke("Normal",[Action]{$NameSpacesForm.Hide()})       })
+    $NameSpaces.Add_MouseDoubleClick({
+
+        $TXT_Selected_NameSpace.Text = $NameSpaces.SelectedItem.Tag
+        $NameSpacesForm.Dispatcher.BeginInvoke("Normal",[Action]{$NameSpacesForm.Hide()})
+
+    })
 
 
 #****************************************************************************************************
@@ -1058,7 +1166,7 @@ $Lbl_NameSpaces_Status_text = $NameSpacesForm.FindName('Lbl_NameSpaces_Status_te
 #
 #****************************************************************************************************
     $RightClick_LWCLasses_Export_Query.Add_Click({
-    
+
         $Script:DataTable | Export-Content
     })
 
@@ -1090,7 +1198,7 @@ $Lbl_NameSpaces_Status_text = $NameSpacesForm.FindName('Lbl_NameSpaces_Status_te
            [System.Windows.Input.Mouse]::OverrideCursor = [System.Windows.Input.Cursors]::Wait
             $Combo_Loaded_PSH_Modules.Items.Clear()
         })
-       
+
         Try{
             $Modules = Get-Module -ErrorAction STOP
 
@@ -1111,7 +1219,7 @@ $Lbl_NameSpaces_Status_text = $NameSpacesForm.FindName('Lbl_NameSpaces_Status_te
     })
     # Get the Imported module commands
     $Combo_Loaded_PSH_Modules.Add_SelectionChanged({
-        
+
         $Combo_Loaded_PSH_Modules.Dispatcher.Invoke("Normal",[Action]{
            [System.Windows.Input.Mouse]::OverrideCursor = [System.Windows.Input.Cursors]::Wait
             $Combo_Loaded_Module_Commands.Items.Clear()
@@ -1144,7 +1252,7 @@ $Lbl_NameSpaces_Status_text = $NameSpacesForm.FindName('Lbl_NameSpaces_Status_te
                 Get-CM12SDKNetCodeExample -CMDLETNAME $Combo_Loaded_Module_Commands.SelectedItem.Content
 
         }
-        
+
         $Chk_Get_Example_From_WEB.Dispatcher.Invoke("Normal",[Action]{
            [System.Windows.Input.Mouse]::OverrideCursor = $Null
         })
@@ -1163,7 +1271,7 @@ $Lbl_NameSpaces_Status_text = $NameSpacesForm.FindName('Lbl_NameSpaces_Status_te
 
         #Download the CM12SDK.Net Code examples
         If($Chk_Get_Example_From_WEB.IsChecked -and $Combo_Loaded_PSH_Modules.SelectedItem.Content -eq "ConfigurationManager"){
-                Get-CM12SDKNetCodeExample -CMDLETNAME $Combo_Loaded_Module_Commands.SelectedItem.Content       
+                Get-CM12SDKNetCodeExample -CMDLETNAME $Combo_Loaded_Module_Commands.SelectedItem.Content
         }
 
          $Combo_Loaded_Module_Commands.Dispatcher.Invoke("Normal",[Action]{
@@ -1197,13 +1305,13 @@ $Lbl_NameSpaces_Status_text = $NameSpacesForm.FindName('Lbl_NameSpaces_Status_te
     $Global:CheckJobStatus.Add_Tick({
 
         if($CheckJobStatus.Tag -ne $null)
-        {        
+        {
             if($CheckJobStatus.Tag.IsCompleted -eq 'True')
             {
                 $script:JOBItems= @()
-                
+
                 $JOBItems += $WorkerThread.endinvoke($sjob)
-                 
+
              foreach ($WorkerItem in $JOBItems) {
                     $WMLiItem = New-Object System.Windows.Controls.ListViewItem
                     $WMLiItem.Content = $WorkerItem.Name
@@ -1213,7 +1321,7 @@ $Lbl_NameSpaces_Status_text = $NameSpacesForm.FindName('Lbl_NameSpaces_Status_te
                     #Update the Progressbar
                     Update-ProgressBar -CurrentValue ($i++) -Maximum $JOBItems.Count -ProgressObject $ProgressUpdate
              }
-                #STOP the JOB   
+                #STOP the JOB
                 $CheckJobStatus.Tag = $null
                 $CheckJobStatus.Stop()
 
@@ -1235,7 +1343,7 @@ $Lbl_NameSpaces_Status_text = $NameSpacesForm.FindName('Lbl_NameSpaces_Status_te
     })
     # Collect the garbage
     $MainFORM.Add_Closed({
-    
+
         [System.GC]::Collect()
         [System.GC]::WaitForPendingFinalizers()
 
@@ -1251,14 +1359,28 @@ $Lbl_NameSpaces_Status_text = $NameSpacesForm.FindName('Lbl_NameSpaces_Status_te
         $ConnectForm.ShowDialog()
     })
     $Close_Main_Window.Add_Click({
-    
+
         $MainFORM.Close()
     })
     # Get the WMI class information
-    $LW_WMIClasses.Add_SelectionChanged({            #Clear the controls values/sources        $TXT_Selected_WMI_Class.Text = $LW_WMIClasses.SelectedItem.Content        $RTXT_Properties_Information.Document.Blocks.Clear()        $RTXT_Method_Information.Document.Blocks.Clear()        $TXT_WQL_Query.Text = "Select * from $($TXT_Selected_WMI_Class.Text)"        $LW_Selected_WMI_Class_Methods.ItemsSource = ""        $LW_Selected_WMI_Class_Lazy_Properties.ItemsSource = ""        #Get the WMI CLass Information        if($LW_WMIClasses.SelectedItem.Content){            Get-WMIClassInformation -ComputerName $TXT_Connected_Computer.Text -ConnectionString $LW_WMIClasses.SelectedItem.Tag -Class $LW_WMIClasses.SelectedItem.Content -UserName $($TXT_User_Name.Text) -Password $($TXT_User_Password.Password) -AuthentLvl $Combo_WMI_Authentication.SelectedItem.Tag        }
+    $LW_WMIClasses.Add_SelectionChanged({
+
+        #Clear the controls values/sources
+        $TXT_Selected_WMI_Class.Text = $LW_WMIClasses.SelectedItem.Content
+        $RTXT_Properties_Information.Document.Blocks.Clear()
+        $RTXT_Method_Information.Document.Blocks.Clear()
+        $TXT_WQL_Query.Text = "Select * from $($TXT_Selected_WMI_Class.Text)"
+        $LW_Selected_WMI_Class_Methods.ItemsSource = ""
+        $LW_Selected_WMI_Class_Lazy_Properties.ItemsSource = ""
+
+        #Get the WMI CLass Information
+        if($LW_WMIClasses.SelectedItem.Content){
+            Get-WMIClassInformation -ComputerName $TXT_Connected_Computer.Text -ConnectionString $LW_WMIClasses.SelectedItem.Tag -Class $LW_WMIClasses.SelectedItem.Content -UserName $($TXT_User_Name.Text) -Password $($TXT_User_Password.Password) -AuthentLvl $Combo_WMI_Authentication.SelectedItem.Tag
+        }
     })
 
-    #Set the filter    $TXT_Filter.Add_TextChanged({
+    #Set the filter
+    $TXT_Filter.Add_TextChanged({
 
         $Text = $TXT_Filter.Text
         $LblView = [System.Windows.Data.CollectionViewSource]::GetDefaultView($LW_WMIClasses.Items)
@@ -1270,25 +1392,95 @@ $Lbl_NameSpaces_Status_text = $NameSpacesForm.FindName('Lbl_NameSpaces_Status_te
 
     })
 
-$Btn_Execute_WMI_QUery.Add_Click({    $MainFORM.Dispatcher.BeginInvoke("Normal",[Action]{        #Set the Cursor to wait state
-        [System.Windows.Input.Mouse]::OverrideCursor = [System.Windows.Input.Cursors]::Wait        $LWView = $LW_WMI_Query_Output.View        $LWView.Columns.Clear()        $LW_WMI_Query_Output.ItemsSource = ""        $SP = @{}
+$Btn_Execute_WMI_QUery.Add_Click({
+
+    $MainFORM.Dispatcher.BeginInvoke("Normal",[Action]{
+        #Set the Cursor to wait state
+        [System.Windows.Input.Mouse]::OverrideCursor = [System.Windows.Input.Cursors]::Wait
+
+        $LWView = $LW_WMI_Query_Output.View
+        $LWView.Columns.Clear()
+        $LW_WMI_Query_Output.ItemsSource = ""
+
+        $SP = @{}
         $AllowQuery = $False
         $Username = $TXT_User_Name.Text
         $Password = $TXT_User_Password.Password
 
         $SP = Build-Splatting -ComputerName $TXT_Connect_Computer.Text -UserName $TXT_User_Name.Text -Password $TXT_User_Password.Password -AuthentLvl $Combo_WMI_Authentication.SelectedItem.Tag
         If($SP -ne 'OK'){
-            Try{                $WMIQuery = Get-WmiObject -Namespace $LW_WMIClasses.SelectedItem.Tag -Query "$($TXT_WQL_Query.Text)" @SP -ErrorAction STOP                $FilterWM = $WMIQuery | Select-Object -First 1            foreach($WQLPROP in $FilterWM.properties)            {                foreach($bb in $WQLPROP)                {                    #Add LW Columns                    Add-ListviewColumn -LWObject $LW_WMI_Query_Output -CHeader $bb.Name -CWidth 100                    #Set the Label Content
-                    $Lbl_Status_text.Content = "Reading"                }            }                Get-WMITableInformation -Namespace $LW_WMIClasses.SelectedItem.Tag -Query "$($TXT_WQL_Query.Text)" -ComputerName $TXT_Connected_Computer.Text -Username $($TXT_User_Name.Text) -Password $($TXT_User_Password.Password) -AuthentLvl $Combo_WMI_Authentication.SelectedItem.Tag            $Lbl_Status_text.Content = "Done"            $ProgressUpdate.Value = 0            }            Catch{            Show-Error -Message $_.Exception.Message            }        }       #Change the cursor back to normal
-       [System.Windows.Input.Mouse]::OverrideCursor = $null    })})
+            Try{
+                $WMIQuery = Get-WmiObject -Namespace $LW_WMIClasses.SelectedItem.Tag -Query "$($TXT_WQL_Query.Text)" @SP -ErrorAction STOP
+                $FilterWM = $WMIQuery | Select-Object -First 1
 
-    $MainFORM.Add_SourceInitialized({        [System.Windows.RoutedEventHandler]$ColumnSortHandler = {            If ($_.OriginalSource -is [System.Windows.Controls.GridViewColumnHeader]) {                           If ($_.OriginalSource -AND $_.OriginalSource.Role -ne 'Padding') {                  $Column = $_.Originalsource.Column.DisplayMemberBinding.Path.Path                  # Change the sort direction each time they sort                  $Desc = if($Column -ne $last){ $true } else { !$Desc }                        $Dir = if($Desc) { "Descending" } else { "Ascending" }                  $last = $Desc                  # And now we actually apply the sort to the View                  $LW_WMI_View = [System.Windows.Data.CollectionViewSource]::GetDefaultView($LW_WMI_Query_Output.ItemsSource)                  $LW_WMI_View.SortDescriptions.Clear()                  $LW_WMI_View.SortDescriptions.Add((New-Object System.ComponentModel.SortDescription $Column, $Dir))                  $LW_WMI_View.Refresh()              }          }              }         #Attach the Event Handler         $LW_WMI_Query_Output.AddHandler([System.Windows.Controls.GridViewColumnHeader]::ClickEvent, $ColumnSortHandler)         })
+            foreach($WQLPROP in $FilterWM.properties)
+            {
+                foreach($bb in $WQLPROP)
+                {
+                    #Add LW Columns
+                    Add-ListviewColumn -LWObject $LW_WMI_Query_Output -CHeader $bb.Name -CWidth 100
+                    #Set the Label Content
+                    $Lbl_Status_text.Content = "Reading"
+
+                }
+            }
+
+            Get-WMITableInformation -Namespace $LW_WMIClasses.SelectedItem.Tag -Query "$($TXT_WQL_Query.Text)" -ComputerName $TXT_Connected_Computer.Text -Username $($TXT_User_Name.Text) -Password $($TXT_User_Password.Password) -AuthentLvl $Combo_WMI_Authentication.SelectedItem.Tag
+
+            $Lbl_Status_text.Content = "Done"
+            $ProgressUpdate.Value = 0
+            }
+            Catch{
+            Show-Error -Message $_.Exception.Message
+            }
+        }
+
+       #Change the cursor back to normal
+       [System.Windows.Input.Mouse]::OverrideCursor = $null
+    })
+})
+
+    $MainFORM.Add_SourceInitialized({
+        [System.Windows.RoutedEventHandler]$ColumnSortHandler = {
+
+            If ($_.OriginalSource -is [System.Windows.Controls.GridViewColumnHeader]) {
+
+                If ($_.OriginalSource -AND $_.OriginalSource.Role -ne 'Padding') {
+
+                  $Column = $_.Originalsource.Column.DisplayMemberBinding.Path.Path
+
+                  # Change the sort direction each time they sort
+                  $Desc = if($Column -ne $last){ $true } else { !$Desc }
+                  $Dir = if($Desc) { "Descending" } else { "Ascending" }
+                  $last = $Desc
+
+                  # And now we actually apply the sort to the View
+                  $LW_WMI_View = [System.Windows.Data.CollectionViewSource]::GetDefaultView($LW_WMI_Query_Output.ItemsSource)
+                  $LW_WMI_View.SortDescriptions.Clear()
+                  $LW_WMI_View.SortDescriptions.Add((New-Object System.ComponentModel.SortDescription $Column, $Dir))
+                  $LW_WMI_View.Refresh()
+            }
+          }
+
+
+         }
+         #Attach the Event Handler
+         $LW_WMI_Query_Output.AddHandler([System.Windows.Controls.GridViewColumnHeader]::ClickEvent, $ColumnSortHandler)
+
+    })
     # Get the Method help
-    $Combo_Selected_Class_Methods.Add_SelectionChanged({        #Clear the RTXT        $RTXT_Method_Information.Document.Blocks.Clear()            if($Combo_Selected_Class_Methods.SelectedItem.content.length -ne 0){            $SP = Build-Splatting -ComputerName $TXT_Connected_Computer.Text -UserName $TXT_User_Name.Text -Password $TXT_User_Password.Password -AuthentLvl $Combo_WMI_Authentication.selecteditem.Content
+    $Combo_Selected_Class_Methods.Add_SelectionChanged({
+
+        #Clear the RTXT
+        $RTXT_Method_Information.Document.Blocks.Clear()
+
+        if($Combo_Selected_Class_Methods.SelectedItem.content.length -ne 0){
+
+            $SP = Build-Splatting -ComputerName $TXT_Connected_Computer.Text -UserName $TXT_User_Name.Text -Password $TXT_User_Password.Password -AuthentLvl $Combo_WMI_Authentication.selecteditem.Content
             if($SP -ne 'OK'){
                 Try{
-                $WMIProperties = Get-WmiObject -Namespace $TXT_Connect_WMI_NameSpace.Text -Class $TXT_Selected_WMI_Class.Text @SP -List -Amended 
-            
+                $WMIProperties = Get-WmiObject -Namespace $TXT_Connect_WMI_NameSpace.Text -Class $TXT_Selected_WMI_Class.Text @SP -List -Amended
+
                 #Get the Method Parameters
                 if($Combo_Selected_Class_Methods.Items.Count -ne 0){
                     $ObjectTypes = $WMIProperties.psbase.GetMethodParameters($Combo_Selected_Class_Methods.SelectedItem.Content)
@@ -1302,7 +1494,16 @@ $Btn_Execute_WMI_QUery.Add_Click({    $MainFORM.Dispatcher.BeginInvoke("Normal
                 {
 
                     Write-LoggingScreen -LogText ("Name - $($PROPType.Name)") -TextColor Black -TextSize 12 -TextWeight "Normal" -Object $RTXT_Method_Information
-                    Write-LoggingScreen -LogText ("Type - $($PROPType.Qualifiers["CimType"].Value)") -TextColor Black -TextSize 12 -TextWeight "Normal" -Object $RTXT_Method_Information                    Write-LoggingScreen -LogText "" -TextColor Black -TextSize 12 -TextWeight "Normal" -Object $RTXT_Method_Information                }               }               Catch{                    Show-Error -Message $_.Exception.Message               }                }        }    })
+                    Write-LoggingScreen -LogText ("Type - $($PROPType.Qualifiers["CimType"].Value)") -TextColor Black -TextSize 12 -TextWeight "Normal" -Object $RTXT_Method_Information
+                    Write-LoggingScreen -LogText "" -TextColor Black -TextSize 12 -TextWeight "Normal" -Object $RTXT_Method_Information
+                }
+               }
+               Catch{
+                    Show-Error -Message $_.Exception.Message
+               }
+            }
+        }
+    })
 
 # add the mouse click to Company logo
 $IMG_CORP_LOGO.Add_MouseUP({Start-Process "WWW.Coretech.dk"})
@@ -1337,5 +1538,3 @@ $ConnectForm.Icon = Read-Image -MainImage $WindowIcon
 $NameSpacesForm.Icon = Read-Image -MainImage $WindowIcon
 
 $MainFORM.ShowDialog()
-
-
