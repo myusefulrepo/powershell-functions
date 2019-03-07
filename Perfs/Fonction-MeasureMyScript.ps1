@@ -48,10 +48,8 @@
 #>
 
     [CmdletBinding()]
+    [OutputType([PSCustomObject])]
     param (
-        [OutputType([PSCustomObject])]
-
-
         # Parameter help description : Name
         [Parameter(HelpMessage = "Name of the test - Default : Test")]
         [string]$Name = "Test",
@@ -73,7 +71,7 @@
                 } })]
         [String]$Unit = 'ms',
 
-        # Parameter help desscription : Repeat
+        # Parameter help description : Repeat
         [parameter(HelpMessage = "number of times to measure the scriptblock - Default : 1")]
         [int]$Repeat = 1
     )
@@ -154,7 +152,7 @@
 
     if ($PSBoundParameters['Repeat'] -gt 1)
     {
-        [ordered]@{
+        [PSCustomObject][ordered]@{
             name = $Name
             Avg  = "{0} {1}" -f (New-Object System.TimeSpan $stats.Average).$u, $msg
             Min  = "{0} {1}" -f (New-Object System.TimeSpan $stats.Minimum).$u, $msg
@@ -163,7 +161,7 @@
     } # End if
     else
     {
-        [ordered]@{
+        [PSCustomObject][ordered]@{
             name = $Name
             Tps  = "{0} {1}" -f (New-Object System.TimeSpan $stats.Average).$u, $msg
         }

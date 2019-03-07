@@ -1,22 +1,46 @@
 ﻿function Read-OpenFileDialog()
 {
     <#
-        .DESCRIPTION
-        Permet d'ouvrir une zone de dialogue afin de choisir un fichier et retourne le fichier sélectionné par l'utilisateur
-        .PARAMETRE
-        aucun
-        .EXAMPLE
-        $MaVariable = Read-OpenFileDialog
-        résultat : PS C:\Users\Moi> $MaVariable
+ .DESCRIPTION
+        Opens a dialog box to choose a file and returns the user selected file
+
+.PARAMETER InitalDirectory
+    Initial Directory path to browse
+    [String] :  Optional
+    Default : $PSscriptRoot
+
+.PARAMETER MultiSelect
+    Allow multi-files seleciton
+    [switch] : Optional
+
+.EXAMPLE
+    $MaVar = Read-OpenFileDialog
+    Result : PS C:\Users\Me> $MaVar
                    IntelGFXa
-        .NOTES
-        Fonction à appeler dans un script pour sélectionner un dossier
+.INPUT
+    <None>
+
+.OUTPUT
+    OpenFileDialog.Filename
+
+ .NOTES
+    Function useful in a script to call and select one or more files in a browser dialog box
+    File Name: Function Read-OpenFileDialog.ps1
+    Author: O.livier FERRIERE
+    Last Edit : 06/03/2019
+    Change : some minor adjustement to pass PSCodeHealth tests.
+
         #>
 
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory)]
-        [string]$InitialDirectory,
+        # Parameter help description : InitialDirectory
+        [Parameter(
+            HelpMessage = "Initial Directory Path to browse")]
+        [string]$InitialDirectory = $PSScriptRoot
+
+        # Parameter help description : AllowMultiSelect
+        [parameter(HelpMessage = "Allow multi-files selection ")]
         [switch]$AllowMultiSelect
     )
 
