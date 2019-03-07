@@ -2,18 +2,19 @@
 {
     <#
 .SYNOPSIS
-Get-FolderSize  recherche de mani?re récursive tous les fichiers et répertoire dans un path donné , calcule et retourne la taille totale
+Get-FolderSize recursively search all files and directory in a given path, calculate and return the total size
 
 .DESCRIPTION
-Get-FolderSize  recherche de manière récursive tous les fichiers et répertoire dans un path donné , calcule et retourne la taille totale
-La taille est affichée en GB, MB, ou KB selon l'unité choisie. Par défaut, c'est en GB.
-Accepte les paths multiples
+Get-FolderSize recursively search all files and directory in a given path, calculate and return the total size?
+
+The size is displayed in GB, MB, or KB depending on the unit chosen. By default, it is in GB.
+Accepts multiple paths
 
 .INPUTS
-   Accepte les Paths en provenance du pipeline
+   Accepts Paths from the pipeline
 
 .OUTPUTS
-   sortie en console
+  console output
 
 .EXAMPLE
 Get-FolderSize -Path c:\temp
@@ -22,7 +23,7 @@ FolderSize FolderName
 ---------- ----------
 0.04 GB    c:\temp
 
-Retourne la taille du répertoire c:\temp en GB (Go en français)
+Return folder size c:\temp in GB
 
 .EXAMPLE
 Get-FolderSize -Path c:\temp, c:\temp2 -Unit MB
@@ -31,41 +32,41 @@ FolderSize FolderName
 ---------- ----------
 39.68 MB   c:\temp
 0.02 MB    c:\temp2
-Retourne la taille des répertoires c:\temp et c:\temp2 en MB (Mo en français)
+Retunr folder size c:\temp and c:\temp2 in MB)
 
 .NOTES
-  Version         :  1.0
+  Version         :  1.1
   Author          : O. FERRIERE
   Creation Date   : 17/01/2018
-  Purpose/Change  : Développement initial du script
+  Purpose/Change  : Script initial development
+  Change           : 07/03/2019 - some minor improvment to pass PScriptAnalyzer PSCodeHealth tests.
 #>
 
-    #>
-    [CmdletBinding(SupportsShouldProcess)]
+    [CmdletBinding()]
     Param
     (
-        # Aide sur Param?tre $Path
+        # Parameter help description : Path
         [Parameter(
-            ValueFromPipeline = $True, # Accepte les entrées depuis le pipeline
-            ValueFromPipelineByPropertyName = $True, # Accepte les entrées depuis le pipeline par nom
-            Mandatory = $true, # obligatoire
-            HelpMessage = "Entrer le path du répertoire cible"      # message d'aide
+            ValueFromPipeline = $True, # Accepts entries from the pipeline
+            ValueFromPipelineByPropertyName = $True, # accept entries from the pipeline by name
+            Mandatory = $true, # Mandatory
+            HelpMessage = "Path of the target directory"      # Help Message
         )]
-        [ValidateScript( {Test-Path $_})]                           # Validation du path. Si n'existe pas, stop.
+        [ValidateScript( {Test-Path $_})]                     # Path Validation. If does not exist, stop.
         [String[]]$Path,
 
-        # Aide sur le param?tre $Unit
+        # Parameter help description : $Unit
         [Parameter(
-            HelpMessage = "Paramétrer l'unité de mesure de la fonction. Le Défaut est en GB (Go en fran?ais), Les valeurs acceptables sont KB, MB, GB")]
-        [ValidateSet('KB', 'MB', 'GB')]                             # Jeu de validation des unités. Si pas dans le jeu ==> arr?t
+            HelpMessage = "Set the unit of measure for the function. The default is in GB. Acceptable values are KB, MB, GB")]
+        [ValidateSet('KB', 'MB', 'GB')]                       # Unit validation set. If not in the set ==> stop
         [String]$Unit = 'GB'
 
     ) # End param
 
     Begin
     {
-        # Transformation de l'unité saisie en param?tre pour le calcul de la taille
-        Write-Verbose "Paramétrage de l'unité de mesure"
+        # Setting the unit of measurement
+        Write-Verbose "Setting the unit of measurement"
         $value = Switch ($Unit)
         {
             'KB'
@@ -84,56 +85,55 @@ Retourne la taille des répertoires c:\temp et c:\temp2 en MB (Mo en français)
     }
     Process
     {
-        # On entre dans une boucle foreach, pour le cas ou plusieurs paths on été saisies.
+        # we enter a foreach loop, for the case where several paths have been entered.
         Foreach ($FilePath in $Path)
         {
             Try
             {
-                Write-Verbose "Récupération de la taille des répertoires"
-                # On essaie de calculer la taille de l'arborescence en cours de traitement, et si pb on arr?te
+                Write-Verbose -Message "Retrieving the size of the directories"
+                # Try to calculate the size of the tree being processed, and if pb we stop
                 $Size = Get-ChildItem $FilePath -Force -Recurse -ErrorAction Stop |
                     Measure-Object -Property length -Sum
             }
             Catch
             {
-                # En cas d'erreur , on trappe l'erreur et on passe la variable $Probleme à $True
-                Write-Warning $_.Exception.Message
-                $Probleme = $True
+                # In case of error, we trap the error and pass the variable $Problem to $True
+                Write-Error -Message  $_.Exception.Message
+                $Problem = $True
             }
 
-            If (-not ($Probleme))
+            If (-not ($Problem)) # We are in the case where $Problem is not equal to $True
             {
-                # On est dans le cas ou $Probleme n'est pas égal à $True
                 Try
                 {
-                    # Essai de Création d'un PSObject dans lequel on met le nom de l'arborescence et la taille calculée
-                    Write-Verbose "Création d'un PSObject qui contiendra le résultat"
+                    # Try to create a PSObject Essai de Création d'un PSObject feeds with the Name of the tree and the calculated size
+                    Write-Verbose "Creating a PSObject that will contain the result"
                     New-Object -TypeName PSObject -Property @{
                         FolderName = $FilePath
                         FolderSize = "$([math]::Round(($size.sum / $value), 2)) $($Unit.toupper())"
-
                     }
-                }
+                } # End Try
 
                 Catch
                 {
-                    # En cas d'erreur du Try, on attrape l'erreur
-                    Write-Warning $_.Exception.Message
-                    $Probleme = $True
-                }
+                    # In case of error, we catch the error
+                    Write-Error -Message $_.Exception.Message
+                    $Problem = $True
+                } # End Catch
 
-            } # end du If
+            } # End If
 
-            if ($Probleme)
+            if ($Problem)
             {
-                # Réinitialisation de $Problem pour l'arborescence suivante à traiter dans la boucle foreach
-                $Probleme = $false
+                # Resetting $Problem for the next tree to process in the foreach loop
+                $Problem = $false
             }
-        }  # end du foreach
-    } # End du Process
+        }  # End foreach
+    } # End Process
 
     End
     {
-        Write-Verbose "Fin du traitement de l'arborescence en cours"
-    } # End du End
-} # End de la fonction
+        Write-Verbose "End of processing of the current tree"
+    } # End End
+
+} # End function
