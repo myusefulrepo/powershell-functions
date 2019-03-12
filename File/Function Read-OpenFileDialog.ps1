@@ -25,10 +25,10 @@
 
  .NOTES
     Function useful in a script to call and select one or more files in a browser dialog box
-    File Name: Function Read-OpenFileDialog.ps1
-    Author: O.livier FERRIERE
-    Last Edit : 06/03/2019
-    Change : some minor adjustement to pass PSCodeHealth tests.
+    File Name  : Function Read-OpenFileDialog.ps1
+    Author     : Olivier FERRIERE
+    Last Edit  : 06/03/2019
+    Change     : some minor adjustement to pass PSCodeHealth tests and PSScriptAnalyzer tests
 
         #>
 
