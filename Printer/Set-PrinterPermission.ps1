@@ -35,7 +35,7 @@
 .NOTES
     Version : 1.0
     Date : 07 August 2021
-    Author : O. FERRIERE
+    Author : Olivier
     Change : v1.0 - 07/08/2021 - Initial Version - Tested with PSVersion 5.1.19041.1
     Based on https://docs.microsoft.com/En-US/windows/win32/cimwin32prov/setsecuritydescriptor-method-in-class-win32-printer?redirectedfrom=MSDN
 
