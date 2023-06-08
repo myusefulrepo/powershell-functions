@@ -60,7 +60,7 @@
         [ScriptBlock]$ScriptBlock,
 
         # Parameter help description : Unit
-        [paremeter(HelpMessage = "Unit to measure time - Accepted values : d, h, m, s, ms - Default : ms")]
+        [parameter(HelpMessage = "Unit to measure time - Accepted values : d, h, m, s, ms - Default : ms")]
         [ValidateScript( { if (@('d', 'h', 'm', 's', 'ms') -contains $_)
                 {
                     $true
